@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.git/
+.venv/
+venv/
+data/                 # don't bake local DB into the image; db.py seeds it on first run
+*.md
+.DS_Store
