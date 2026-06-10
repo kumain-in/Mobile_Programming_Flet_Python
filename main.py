@@ -117,15 +117,20 @@ def main(page: ft.Page) -> None:
         ], spacing=0, tight=True, alignment=ft.MainAxisAlignment.END)
 
     def btn(label, on_click, icon=None, kind="primary"):
-        """Factory for the three button styles used in the app:
-        primary (filled blue), danger (filled red), ghost (outlined)."""
-        bg = {"primary": C.PRIMARY, "danger": C.DANGER}.get(kind, C.PRIMARY)
+        """Factory for the button styles used in the app:
+        primary (filled blue), danger (filled red), white (filled white, blue
+        text — same shape as primary, for use on the blue header), ghost (outlined)."""
         if kind == "ghost":
             return ft.OutlinedButton(label, icon=icon, on_click=on_click,
                                      style=ft.ButtonStyle(color=C.TEXT_2,
                                                           shape=ft.RoundedRectangleBorder(radius=C.R)))
+        # filled styles: white reads blue-on-white, the rest are colored-on-white
+        if kind == "white":
+            bg, fg = "#FFFFFF", C.PRIMARY
+        else:
+            bg, fg = {"danger": C.DANGER}.get(kind, C.PRIMARY), "#FFFFFF"
         return ft.FilledButton(label, icon=icon, on_click=on_click,
-                               style=ft.ButtonStyle(bgcolor=bg, color="#FFFFFF",
+                               style=ft.ButtonStyle(bgcolor=bg, color=fg,
                                                     shape=ft.RoundedRectangleBorder(radius=C.R),
                                                     padding=ft.Padding(16, 14, 16, 14)))
 
@@ -417,7 +422,7 @@ def main(page: ft.Page) -> None:
         list mode, or a 'Kembali' (back) button while in a form/delete panel."""
         right = (btn("Tambah Mahasiswa", lambda e: go_add(), icon=ft.Icons.PERSON_ADD_ALT_1)
                  if state["mode"] == "list" else
-                 btn("Kembali", lambda e: go_list(), icon=ft.Icons.ARROW_BACK, kind="ghost"))
+                 btn("Kembali", lambda e: go_list(), icon=ft.Icons.ARROW_BACK, kind="white"))
         brand = ft.Row([
             ft.Container(content=ft.Text("SM", color="#FFFFFF", weight=ft.FontWeight.W_800, size=15),
                          width=36, height=36, border_radius=9,
